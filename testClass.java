@@ -43,6 +43,23 @@ SOFTWARE.
  */
 public class CDL {
 
+	// non-trivial examples! (Provided by Kevin!)
+
+	Map<String,Integer> map;
+
+	public int getVal(String s) {
+		return map.get(s);
+	}
+
+	public Boolean doSOmething() {
+		return null;
+	}
+
+	public boolean doSomethingElse() {
+		Boolean retVal = doSOmething();
+		return retVal;
+	}
+
     /**
      * Get the next value. The value can be wrapped in quotes. The value can
      * be empty.
@@ -276,20 +293,4 @@ public class CDL {
         return sb.toString();
     }
 
-	// non-trivial examples! (Provided by Kevin!)
-
-	Map<String,Integer> map;
-
-	public int getVal(String s) {
-		return map.get(s);
-	}
-
-	public Boolean doSOmething() {
-		return null;
-	}
-
-	public boolean doSomethingElse() {
-		Boolean retVal = doSOmething();
-		return retVal;
-	}
 }
