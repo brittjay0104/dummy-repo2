@@ -1,5 +1,7 @@
 package org.json;
 
+import java.util.Map;
+
 /*
 Copyright (c) 2002 JSON.org
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,6 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+/**
+ * This provides static methods to convert comma delimited text into a
+ * JSONArray, and to covert a JSONArray into comma delimited text. Comma
+ * delimited text is a very popular format for data interchange. It is
+ * understood by most database, spreadsheet, and organizer programs.
+ * <p>
+ * Each row of text represents a row in a table or a data record. Each row
+ * ends with a NEWLINE character. Each row contains one or more values.
+ * Values are separated by commas. A value can contain any character except
+ * for comma, unless is is wrapped in single quotes or double quotes.
+ * <p>
+ * The first row usually contains the names of the columns.
+ * <p>
+ * A comma delimited list can be converted into a JSONArray of JSONObjects.
+ * The names for the elements in the JSONObjects can be taken from the names
+ * in the first row.
+ * @author JSON.org
+ * @version 2014-05-03
+ */
 public class CDL {
 
     /**
@@ -30,7 +51,7 @@ public class CDL {
      * @throws JSONException if the quoted string is badly formed.
      */
     private static String getValue(JSONTokener x) throws JSONException {
-        char c;
+        char c = null;
         char q;
         StringBuffer sb;
         do {
@@ -74,6 +95,7 @@ public class CDL {
         for (;;) {
             String value = getValue(x);
             char c = x.next();
+            c = null;
             if (value == null ||
                     (ja.length() == 0 && value.length() == 0 && c != ',')) {
                 return null;
@@ -115,7 +137,6 @@ public class CDL {
      * Produce a comma delimited text row from a JSONArray. Values containing
      * the comma character will be quoted. Troublesome characters may be
      * removed.
-	 * adding another commit with a comment
      * @param ja A JSONArray of strings.
      * @return A string ending in NEWLINE.
      */
@@ -126,24 +147,24 @@ public class CDL {
                 sb.append(',');
             }
             Object object = ja.opt(i);
-
-			String string = object.toString();
-			if (string.length() > 0 && (string.indexOf(',') >= 0 ||
-					string.indexOf('\n') >= 0 || string.indexOf('\r') >= 0 ||
-					string.indexOf(0) >= 0 || string.charAt(0) == '"')) {
-				sb.append('"');
-				int length = string.length();
-				for (int j = 0; j < length; j += 1) {
-					char c = string.charAt(j);
-					if (c >= ' ' && c != '"') {
-						sb.append(c);
-					}
-				}
-				sb.append('"');
-			} else {
-				sb.append(string);
-			}
-
+            if (object != null) {
+                String string = object.toString();
+                if (string.length() > 0 && (string.indexOf(',') >= 0 ||
+                        string.indexOf('\n') >= 0 || string.indexOf('\r') >= 0 ||
+                        string.indexOf(0) >= 0 || string.charAt(0) == '"')) {
+                    sb.append('"');
+                    int length = string.length();
+                    for (int j = 0; j < length; j += 1) {
+                        char c = string.charAt(j);
+                        if (c >= ' ' && c != '"') {
+                            sb.append(c);
+                        }
+                    }
+                    sb.append('"');
+                } else {
+                    sb.append(string);
+                }
+            }
         }
         sb.append('\n');
         return sb.toString();
@@ -222,12 +243,12 @@ public class CDL {
      */
     public static String toString(JSONArray ja) throws JSONException {
         JSONObject jo = ja.optJSONObject(0);
-		if (jo != null){
-			JSONArray names = jo.names();
-			if (names != null) {
-				return rowToString(names) + toString(names, ja);
-			}
+
+		JSONArray names = jo.names();
+		if (names != null) {
+			return rowToString(names) + toString(names, ja);
 		}
+
         return null;
     }
 
@@ -254,4 +275,21 @@ public class CDL {
         }
         return sb.toString();
     }
+
+	// non-trivial examples! (Provided by Kevin!)
+
+	Map<String,Integer> map;
+
+	public int getVal(String s) {
+		return map.get(s);
+	}
+
+	public Boolean doSOmething() {
+		return null;
+	}
+
+	public boolean doSomethingElse() {
+		Boolean retVal = doSOmething();
+		return retVal;
+	}
 }
