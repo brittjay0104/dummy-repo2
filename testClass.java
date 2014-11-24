@@ -20,25 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/**
- * This provides static methods to convert comma delimited text into a
- * JSONArray, and to covert a JSONArray into comma delimited text. Comma
- * delimited text is a very popular format for data interchange. It is
- * understood by most database, spreadsheet, and organizer programs.
- * <p>
- * Each row of text represents a row in a table or a data record. Each row
- * ends with a NEWLINE character. Each row contains one or more values.
- * Values are separated by commas. A value can contain any character except
- * for comma, unless is is wrapped in single quotes or double quotes.
- * <p>
- * The first row usually contains the names of the columns.
- * <p>
- * A comma delimited list can be converted into a JSONArray of JSONObjects.
- * The names for the elements in the JSONObjects can be taken from the names
- * in the first row.
- * @author JSON.org
- * @version 2014-05-03
- */
 public class CDL {
 
     /**
@@ -134,6 +115,7 @@ public class CDL {
      * Produce a comma delimited text row from a JSONArray. Values containing
      * the comma character will be quoted. Troublesome characters may be
      * removed.
+	 * adding another commit with a comment
      * @param ja A JSONArray of strings.
      * @return A string ending in NEWLINE.
      */
